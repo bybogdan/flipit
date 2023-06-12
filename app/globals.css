@@ -38,7 +38,7 @@ body {
   }
 
   .my-react-select-container .my-react-select__single-value {
-    @apply min-w-[5em] sm:min-w-[4em];
+    @apply min-w-[6em] sm:min-w-[5em];
   }
 
   .my-react-select-container .my-react-select__option {

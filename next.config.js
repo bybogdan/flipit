@@ -4,9 +4,6 @@ const withPWA = require("next-pwa");
 const runtimeCaching = require("next-pwa/cache");
 
 const nextConfig = {
-  experimental: {
-    serverActions: true
-  }
 }
 
 module.exports = withPWA({
