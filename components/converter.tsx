@@ -1,5 +1,6 @@
 'use client'
 
+import { CurrencyOption } from '@/app/page'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import Select from 'react-select'
@@ -26,11 +27,17 @@ const currenciesOptions = [
   { value: 'RUB', label: 'RUB ₽', USD: 83.74, EUR: 89.99, GEL: 32.22, RUB: 1 },
 ]
 
-export const Converter = () => {
+export const Converter = ({ options }: { options: CurrencyOption[] }) => {
   const [amount, setAmount] = useState<number | ''>(1)
   const [currency, setCurrency] = useState('USD')
 
-  const others = currenciesOptions.filter((c) => c.value !== currency)
+  const current = options.find((c) => c.value === currency)
+  const mapOptionsToShow = new Map(Object.entries(current || {}))
+  mapOptionsToShow.delete('value')
+  mapOptionsToShow.delete('label')
+  mapOptionsToShow.delete(currency)
+  const others = Array.from(mapOptionsToShow)
+
   return (
     <>
       <div className="flex gap-2 mb-10 w-full">
@@ -72,14 +79,12 @@ export const Converter = () => {
         />
       </div>
       <div className="flex flex-col w-full gap-4">
-        {others.map((c) => {
+        {others.map(([label, value]) => {
           return (
-            <div key={c.label} className="">
+            <div key={label} className="">
               <div className="flex justify-between gap-2 text-xl">
-                <p>
-                  {(Number(c[currency as keyof typeof c]) * +amount).toFixed(2)}
-                </p>
-                <p>{c.label}</p>
+                <p>{(Number(value) * +amount).toFixed(2)}</p>
+                <p>{label}</p>
               </div>
             </div>
           )
