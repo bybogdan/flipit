@@ -1,7 +1,7 @@
 'use client'
 
 import { CurrencyOption } from '@/app/page'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import Select from 'react-select'
 
@@ -28,7 +28,7 @@ const currenciesOptions = [
 ]
 
 export const Converter = ({ options }: { options: CurrencyOption[] }) => {
-  const [amount, setAmount] = useState<number | ''>(1)
+  const [amount, setAmount] = useState<number | ''>('')
   const [currency, setCurrency] = useState('USD')
 
   const current = options.find((c) => c.value === currency)
@@ -38,12 +38,19 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
   mapOptionsToShow.delete(currency)
   const others = Array.from(mapOptionsToShow)
 
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    inputRef?.current?.focus()
+  }, [])
+
   return (
     <>
       <div className="flex gap-2 mb-10 w-full">
         <input
           className={`form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-600 focus:bg-white focus:text-gray-700`}
           placeholder="Amount"
+          ref={inputRef}
           inputMode="decimal"
           type="string"
           value={amount}
