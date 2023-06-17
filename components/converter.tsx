@@ -39,11 +39,11 @@ export const Converter = () => {
           inputMode="decimal"
           type="number"
           value={amount}
-          onChange={(e) =>
+          onChange={(e) => {
             e.target.value === ''
               ? setAmount(0)
               : setAmount(parseFloat(e.target.value))
-          }
+          }}
         />
         <Select
           className="my-react-select-container"
