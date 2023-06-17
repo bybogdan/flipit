@@ -68,7 +68,7 @@ export default async function Home() {
   const timeDiff = timeNow - +new Date(lastCurrency.created_at)
   const timeDiffInHours = timeDiff / (1000 * 60 * 60)
 
-  // REFETCHED EVERY 12 HOURS
+  // REFETCH EVERY 12 HOURS
   if (!data || data.length === 0 || timeDiffInHours > 12) {
     const freshCurrencies = await Promise.all([
       new CurrencyAPI(process.env.CURRENCYAPI_KEY)?.latest({

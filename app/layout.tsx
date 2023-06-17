@@ -114,7 +114,7 @@ export default function RootLayout({
         <meta property="og:title" content="Flipit: Uncover Currency Charm!" />
         <meta
           property="og:description"
-          content="Convenient way to take notes"
+          content="Easiest way to check currencies online!"
         />
         <meta property="og:url" content="https://flipit-eta.vercel.app/" />
         <meta content="website" property="og:type" />
