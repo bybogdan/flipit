@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { toast } from 'react-hot-toast'
 import Select from 'react-select'
 
 const getCurrencySymbol = (currency: string) => {
@@ -26,7 +27,7 @@ const currenciesOptions = [
 ]
 
 export const Converter = () => {
-  const [amount, setAmount] = useState(1)
+  const [amount, setAmount] = useState<number | ''>(1)
   const [currency, setCurrency] = useState('USD')
 
   const others = currenciesOptions.filter((c) => c.value !== currency)
@@ -37,12 +38,25 @@ export const Converter = () => {
           className={`form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-600 focus:bg-white focus:text-gray-700`}
           placeholder="Amount"
           inputMode="decimal"
-          type="number"
+          type="string"
           value={amount}
           onChange={(e) => {
-            e.target.value === ''
-              ? setAmount(0)
-              : setAmount(parseFloat(e.target.value))
+            if (e.target.value === '') {
+              setAmount('')
+              return
+            }
+
+            if (Number.isNaN(+e.target.value)) {
+              toast.error(
+                `Are you nuts?
+                Use only the integers [0-9]`
+              )
+
+              setAmount('')
+              return
+            }
+
+            setAmount(parseFloat(e.target.value))
           }}
         />
         <Select
@@ -58,22 +72,18 @@ export const Converter = () => {
         />
       </div>
       <div className="flex flex-col w-full gap-4">
-        {amount === 0
-          ? null
-          : others.map((c) => {
-              return (
-                <div key={c.label} className="">
-                  <div className="flex justify-between gap-2 text-xl">
-                    <p>
-                      {(Number(c[currency as keyof typeof c]) * amount).toFixed(
-                        2
-                      )}
-                    </p>
-                    <p>{c.label}</p>
-                  </div>
-                </div>
-              )
-            })}
+        {others.map((c) => {
+          return (
+            <div key={c.label} className="">
+              <div className="flex justify-between gap-2 text-xl">
+                <p>
+                  {(Number(c[currency as keyof typeof c]) * +amount).toFixed(2)}
+                </p>
+                <p>{c.label}</p>
+              </div>
+            </div>
+          )
+        })}
       </div>
     </>
   )
