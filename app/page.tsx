@@ -64,8 +64,12 @@ export default async function Home() {
 
   let lastCurrency = data && data.length && data[0]
 
-  // TODO: REFETCH EVERY DAY
-  if (!data || data.length === 0) {
+  const timeNow = +new Date()
+  const timeDiff = timeNow - +new Date(lastCurrency.created_at)
+  const timeDiffInHours = timeDiff / (1000 * 60 * 60)
+
+  // REFETCHED EVERY 12 HOURS
+  if (!data || data.length === 0 || timeDiffInHours > 12) {
     const freshCurrencies = await Promise.all([
       new CurrencyAPI(process.env.CURRENCYAPI_KEY)?.latest({
         base_currency: 'USD',
@@ -91,7 +95,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex py-10 justify-start md:justify-center items-center h-full flex-col p-2 md:w-6/12 mx-auto">
+    <div className="flex py-6 px-6 justify-start md:justify-center items-center h-full flex-col p-2 md:w-6/12 mx-auto">
       <Toaster />
       <Converter options={formatCurrency(lastCurrency)} />
 
