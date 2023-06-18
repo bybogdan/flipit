@@ -91,7 +91,8 @@ export default async function Home() {
     await supabase.from('currencies').insert({
       value: JSON.stringify(freshCurrencies),
     })
-    lastCurrency = freshCurrencies
+
+    lastCurrency = { value: JSON.stringify(freshCurrencies) }
   }
 
   return (
