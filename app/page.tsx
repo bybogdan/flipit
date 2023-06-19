@@ -3,6 +3,9 @@ import { createClient } from '@supabase/supabase-js'
 import { Toaster } from 'react-hot-toast'
 import CurrencyAPI from '@everapi/currencyapi-js'
 
+export const revalidate = 0
+export const dynamic = 'force-dynamic'
+
 type Currency = {
   id: number
   value: string
@@ -88,6 +91,7 @@ export default async function Home() {
         currencies: 'USD,EUR,GEL,RUB',
       }),
     ])
+
     await supabase.from('currencies').insert({
       value: JSON.stringify(freshCurrencies),
     })
