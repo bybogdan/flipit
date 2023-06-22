@@ -1,9 +1,12 @@
 'use client'
 
 import { CurrencyOption } from '@/app/page'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import Select from 'react-select'
+import { SettingIcon } from './icons'
+import Link from 'next/link'
+import { LC_CURRENCY } from '@/lib/utils'
 
 const getCurrencySymbol = (currency: string) => {
   switch (currency) {
@@ -19,13 +22,6 @@ const getCurrencySymbol = (currency: string) => {
       return '$'
   }
 }
-
-const currenciesOptions = [
-  { value: 'USD', label: 'USD $', USD: 1, EUR: 1.07, GEL: 0.38, RUB: 0.012 },
-  { value: 'EUR', label: 'EUR €', USD: 0.93, EUR: 1, GEL: 0.36, RUB: 0.011 },
-  { value: 'GEL', label: 'GEL ₾', USD: 2.6, EUR: 2.79, GEL: 1, RUB: 0.03 },
-  { value: 'RUB', label: 'RUB ₽', USD: 83.74, EUR: 89.99, GEL: 32.22, RUB: 1 },
-]
 
 export const Converter = ({ options }: { options: CurrencyOption[] }) => {
   const [amount, setAmount] = useState<number | ''>('')
@@ -44,9 +40,17 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
     inputRef?.current?.focus()
   }, [])
 
+  useMemo(() => {
+    const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
+    setCurrency(currency)
+  }, [])
+
   return (
-    <>
-      <div className="flex gap-2 mb-10 w-full">
+    <div className="w-full flex flex-col items-end">
+      <Link href="/settings">
+        <SettingIcon />
+      </Link>
+      <div className="flex gap-2 my-10 w-full">
         <input
           className={`form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-600 focus:bg-white focus:text-gray-700`}
           placeholder="Amount"
@@ -76,7 +80,7 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
         <Select
           className="my-react-select-container"
           classNamePrefix="my-react-select"
-          options={currenciesOptions}
+          options={options}
           value={{
             value: currency,
             label: `${currency} ${getCurrencySymbol(currency)}`,
@@ -100,6 +104,6 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
           )
         })}
       </div>
-    </>
+    </div>
   )
 }

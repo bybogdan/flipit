@@ -21,6 +21,41 @@ export type CurrencyOption = {
   RUB: number
 }
 
+const mock = [
+  {
+    value: 'USD',
+    label: 'USD $',
+    EUR: 0.909801,
+    USD: 1,
+    GEL: 2.615004,
+    RUB: 83.650098,
+  },
+  {
+    value: 'EUR',
+    label: 'EUR €',
+    EUR: 1,
+    USD: 1.099141,
+    GEL: 2.874259,
+    RUB: 91.943253,
+  },
+  {
+    value: 'GEL',
+    label: 'GEL ₾',
+    EUR: 0.347916,
+    USD: 0.382409,
+    GEL: 1,
+    RUB: 31.988511,
+  },
+  {
+    value: 'RUB',
+    label: 'RUB ₽',
+    EUR: 0.010876,
+    USD: 0.011955,
+    GEL: 0.031261,
+    RUB: 1,
+  },
+]
+
 const getCurrencySymbol = (currency: string) => {
   switch (currency) {
     case 'USD':
@@ -51,7 +86,7 @@ const formatCurrency = (currencyData: Currency) => {
     }
   })
 
-  return selectOptions
+  return selectOptions ?? mock
 }
 
 export default async function Home() {
@@ -100,7 +135,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex py-6 px-6 justify-start md:justify-center items-center h-full flex-col p-2 md:w-6/12 mx-auto">
+    <div className="flex py-6 px-6 justify-start md:justify-center items-center h-full flex-col p-2 md:w-6/12 mx-auto md:-mt-6">
       <Toaster />
       <Converter options={formatCurrency(lastCurrency)} />
 
