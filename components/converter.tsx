@@ -41,8 +41,10 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
   }, [])
 
   useMemo(() => {
-    const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
-    setCurrency(currency)
+    if (typeof window !== 'undefined') {
+      const currency = window.localStorage.getItem(LC_CURRENCY) || 'USD'
+      setCurrency(currency)
+    }
   }, [])
 
   return (

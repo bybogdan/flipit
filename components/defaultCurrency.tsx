@@ -18,14 +18,16 @@ export const DefaultCurrency = () => {
   })
 
   useMemo(() => {
-    const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
-    setCurenciesOptions(() => ({
-      USD: false,
-      EUR: false,
-      GEL: false,
-      RUB: false,
-      [currency]: true,
-    }))
+    if (typeof window !== 'undefined') {
+      const currency = window.localStorage.getItem(LC_CURRENCY) || 'USD'
+      setCurenciesOptions(() => ({
+        USD: false,
+        EUR: false,
+        GEL: false,
+        RUB: false,
+        [currency]: true,
+      }))
+    }
   }, [])
 
   return (
@@ -39,14 +41,16 @@ export const DefaultCurrency = () => {
             <Switch
               checked={curenciesOptions[currency]}
               onCheckedChange={(checked) => {
-                localStorage.setItem(LC_CURRENCY, currency)
-                setCurenciesOptions(() => ({
-                  USD: false,
-                  EUR: false,
-                  GEL: false,
-                  RUB: false,
-                  [currency]: checked,
-                }))
+                if (typeof window !== 'undefined') {
+                  window.localStorage.setItem(LC_CURRENCY, currency)
+                  setCurenciesOptions(() => ({
+                    USD: false,
+                    EUR: false,
+                    GEL: false,
+                    RUB: false,
+                    [currency]: checked,
+                  }))
+                }
               }}
               id={currency}
             />
