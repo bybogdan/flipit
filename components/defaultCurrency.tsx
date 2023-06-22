@@ -19,7 +19,7 @@ export const DefaultCurrency = () => {
 
   useMemo(() => {
     if (typeof window !== 'undefined') {
-      const currency = window.localStorage.getItem(LC_CURRENCY) || 'USD'
+      const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
       setCurenciesOptions(() => ({
         USD: false,
         EUR: false,
@@ -42,7 +42,7 @@ export const DefaultCurrency = () => {
               checked={curenciesOptions[currency]}
               onCheckedChange={(checked) => {
                 if (typeof window !== 'undefined') {
-                  window.localStorage.setItem(LC_CURRENCY, currency)
+                  localStorage.setItem(LC_CURRENCY, currency)
                   setCurenciesOptions(() => ({
                     USD: false,
                     EUR: false,

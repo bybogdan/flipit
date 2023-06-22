@@ -42,7 +42,7 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
 
   useMemo(() => {
     if (typeof window !== 'undefined') {
-      const currency = window.localStorage.getItem(LC_CURRENCY) || 'USD'
+      const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
       setCurrency(currency)
     }
   }, [])
