@@ -85,10 +85,13 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
           isSearchable={false}
         />
       </div>
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex flex-col w-full gap-6">
         {others.map(([label, value]) => {
           return (
-            <div key={label} className="">
+            <div
+              key={label}
+              className="relative w-full rounded-lg border p-4 border-slate-300 dark:border-slate-600"
+            >
               <div className="flex justify-between gap-2 text-xl">
                 <p>{(Number(value) * +amount).toFixed(2)}</p>
                 <p>{label}</p>
