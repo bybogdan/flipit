@@ -2,12 +2,13 @@
 
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { LC_CURRENCY } from '@/lib/utils'
+import { LC_CURRENCY, cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 
 const currencyNames = ['USD', 'EUR', 'GEL', 'RUB']
 
 export const DefaultCurrency = () => {
+  const [isLoaded, setIsLoaded] = useState(false)
   const [curenciesOptions, setCurenciesOptions] = useState<{
     [key: string]: boolean
   }>({
@@ -26,6 +27,7 @@ export const DefaultCurrency = () => {
       RUB: false,
       [currency]: true,
     }))
+    setIsLoaded(true)
   }, [])
 
   return (
@@ -54,6 +56,7 @@ export const DefaultCurrency = () => {
                 }
               }}
               id={currency}
+              isLoaded={isLoaded}
             />
             <Label
               htmlFor={currency}
