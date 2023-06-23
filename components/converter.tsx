@@ -7,6 +7,7 @@ import Select from 'react-select'
 import { SettingIcon } from './icons'
 import Link from 'next/link'
 import { LC_CURRENCY } from '@/lib/utils'
+import { Skeleton } from './ui/skeleton'
 
 const getCurrencySymbol = (currency: string) => {
   switch (currency) {
@@ -24,6 +25,7 @@ const getCurrencySymbol = (currency: string) => {
 }
 
 export const Converter = ({ options }: { options: CurrencyOption[] }) => {
+  const [isLoaded, setIsLoaded] = useState(false)
   const [amount, setAmount] = useState<number | ''>('')
   const [currency, setCurrency] = useState('USD')
 
@@ -39,7 +41,7 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
   useEffect(() => {
     const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
     setCurrency(currency)
-
+    setIsLoaded(true)
     inputRef?.current?.focus()
   }, [])
 
@@ -48,6 +50,7 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
       <Link href="/settings">
         <SettingIcon />
       </Link>
+
       <div className="flex gap-2 my-10 w-full">
         <input
           className={`form-control m-0 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-600 focus:bg-white focus:text-gray-700`}
@@ -56,6 +59,7 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
           inputMode="decimal"
           type="string"
           value={amount}
+          disabled={!isLoaded}
           onChange={(e) => {
             if (e.target.value === '') {
               setAmount('')
@@ -75,16 +79,18 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
             setAmount(parseFloat(e.target.value))
           }}
         />
+
         <Select
           className="my-react-select-container"
           classNamePrefix="my-react-select"
           options={options}
           value={{
             value: currency,
-            label: `${currency} ${getCurrencySymbol(currency)}`,
+            label: isLoaded ? `${currency} ${getCurrencySymbol(currency)}` : '',
           }}
           onChange={(val) => (val?.value ? setCurrency(val.value) : null)}
           isSearchable={false}
+          isDisabled={!isLoaded}
         />
       </div>
       <div className="flex flex-col w-full gap-6">
@@ -96,7 +102,7 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
             >
               <div className="flex justify-between gap-2 text-xl">
                 <p>{(Number(value) * +amount).toFixed(2)}</p>
-                <p>{label}</p>
+                {isLoaded ? <p>{label}</p> : <Skeleton className="w-12" />}
               </div>
             </div>
           )
