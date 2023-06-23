@@ -1,7 +1,7 @@
 'use client'
 
 import { CurrencyOption } from '@/app/page'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import Select from 'react-select'
 import { SettingIcon } from './icons'
@@ -37,14 +37,10 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    inputRef?.current?.focus()
-  }, [])
+    const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
+    setCurrency(currency)
 
-  useMemo(() => {
-    if (typeof window !== 'undefined') {
-      const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
-      setCurrency(currency)
-    }
+    inputRef?.current?.focus()
   }, [])
 
   return (

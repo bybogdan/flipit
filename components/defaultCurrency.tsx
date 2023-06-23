@@ -3,7 +3,7 @@
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { LC_CURRENCY } from '@/lib/utils'
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const currencyNames = ['USD', 'EUR', 'GEL', 'RUB']
 
@@ -17,17 +17,15 @@ export const DefaultCurrency = () => {
     RUB: false,
   })
 
-  useMemo(() => {
-    if (typeof window !== 'undefined') {
-      const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
-      setCurenciesOptions(() => ({
-        USD: false,
-        EUR: false,
-        GEL: false,
-        RUB: false,
-        [currency]: true,
-      }))
-    }
+  useEffect(() => {
+    const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
+    setCurenciesOptions(() => ({
+      USD: false,
+      EUR: false,
+      GEL: false,
+      RUB: false,
+      [currency]: true,
+    }))
   }, [])
 
   return (
