@@ -41,6 +41,9 @@ export const DefaultCurrency = () => {
               onCheckedChange={(checked) => {
                 if (typeof window !== 'undefined') {
                   localStorage.setItem(LC_CURRENCY, currency)
+                  if (!checked && !!curenciesOptions[currency]) {
+                    return
+                  }
                   setCurenciesOptions(() => ({
                     USD: false,
                     EUR: false,
