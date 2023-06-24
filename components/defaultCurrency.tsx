@@ -4,10 +4,15 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { LC_CURRENCY, cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 const currencyNames = ['USD', 'EUR', 'GEL', 'RUB']
 
 export const DefaultCurrency = () => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const initialCurrency = searchParams.get('c') ?? ''
+
   const [isLoaded, setIsLoaded] = useState(false)
   const [curenciesOptions, setCurenciesOptions] = useState<{
     [key: string]: boolean
@@ -16,9 +21,11 @@ export const DefaultCurrency = () => {
     EUR: false,
     GEL: false,
     RUB: false,
+    [initialCurrency]: true,
   })
 
   useEffect(() => {
+    router.replace('/settings')
     const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
     setCurenciesOptions(() => ({
       USD: false,

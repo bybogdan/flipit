@@ -37,17 +37,18 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
   const others = Array.from(mapOptionsToShow)
 
   const inputRef = useRef<HTMLInputElement>(null)
+  let defaultCurrency = useRef('')
 
   useEffect(() => {
-    const currency = localStorage.getItem(LC_CURRENCY) || 'USD'
-    setCurrency(currency)
+    defaultCurrency.current = localStorage.getItem(LC_CURRENCY) || 'USD'
+    setCurrency(defaultCurrency.current)
     setIsLoaded(true)
     inputRef?.current?.focus()
   }, [])
 
   return (
     <div className="w-full flex flex-col items-end">
-      <Link href="/settings">
+      <Link href={`/settings?c=${defaultCurrency.current}`}>
         <SettingIcon />
       </Link>
 
