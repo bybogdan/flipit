@@ -1,3 +1,4 @@
+import { LinkToHome } from '@/components/linkToHome'
 import Image from 'next/image'
 
 export const metadata = {
@@ -147,6 +148,7 @@ export default async function Install() {
           </div>
         </div>
       </section>
+      <LinkToHome />
     </div>
   )
 }

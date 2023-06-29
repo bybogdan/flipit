@@ -1,6 +1,5 @@
 import { DefaultCurrency } from '@/components/defaultCurrency'
-import { BackIcon } from '@/components/icons'
-import Link from 'next/link'
+import { LinkToHome } from '@/components/linkToHome'
 
 export default async function Settings() {
   return (
@@ -9,14 +8,7 @@ export default async function Settings() {
         Set default currency
       </h3>
       <DefaultCurrency />
-      <div className="mt-10 flex justify-center py-2 px-6 rounded-lg border border-slate-300 dark:border-slate-600">
-        <Link
-          href="/"
-          className="flex text-gray-900 text-xl dark:text-white gap-2 items-center"
-        >
-          <BackIcon /> Go to home
-        </Link>
-      </div>
+      <LinkToHome />
     </div>
   )
 }

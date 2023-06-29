@@ -4,7 +4,7 @@ import { CurrencyOption } from '@/app/page'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import Select from 'react-select'
-import { SettingIcon } from './icons'
+import { InstallIcon, SettingIcon } from './icons'
 import Link from 'next/link'
 import { LC_CURRENCY } from '@/lib/utils'
 import { Skeleton } from './ui/skeleton'
@@ -48,9 +48,14 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
 
   return (
     <div className="w-full flex flex-col items-end">
-      <Link href={`/settings?c=${defaultCurrency.current}`}>
-        <SettingIcon />
-      </Link>
+      <div className="w-full flex items-center justify-between">
+        <Link href={`/install`} className="flex gap-2">
+          <InstallIcon /> How to install
+        </Link>
+        <Link href={`/settings?c=${defaultCurrency.current}`}>
+          <SettingIcon />
+        </Link>
+      </div>
 
       <div className="flex gap-2 my-10 w-full">
         <input
