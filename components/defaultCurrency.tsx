@@ -2,7 +2,7 @@
 
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { LC_CURRENCY, cn } from '@/lib/utils'
+import { LC_CURRENCY } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 

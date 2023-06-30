@@ -1,5 +1,7 @@
 import { DefaultCurrency } from '@/components/defaultCurrency'
+import { InstallIcon } from '@/components/icons'
 import { LinkToHome } from '@/components/linkToHome'
+import Link from 'next/link'
 
 export default async function Settings() {
   return (
@@ -8,6 +10,11 @@ export default async function Settings() {
         Set default currency
       </h3>
       <DefaultCurrency />
+      <div className="mt-10 flex justify-center py-4 px-6 rounded-lg border border-slate-300 dark:border-slate-600 cursor-pointer">
+        <Link href={`/install`} className="flex gap-2">
+          <InstallIcon /> How to install
+        </Link>
+      </div>
       <LinkToHome />
     </div>
   )

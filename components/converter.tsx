@@ -48,10 +48,7 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
 
   return (
     <div className="w-full flex flex-col items-end">
-      <div className="w-full flex items-center justify-between">
-        <Link href={`/install`} className="flex gap-2">
-          <InstallIcon /> How to install
-        </Link>
+      <div className="w-full flex items-center flex-row-reverse">
         <Link href={`/settings?c=${defaultCurrency.current}`}>
           <SettingIcon />
         </Link>
