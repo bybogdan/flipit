@@ -21,41 +21,6 @@ export type CurrencyOption = {
   RUB: number
 }
 
-const mock = [
-  {
-    value: 'USD',
-    label: 'USD $',
-    EUR: 0.909801,
-    USD: 1,
-    GEL: 2.615004,
-    RUB: 83.650098,
-  },
-  {
-    value: 'EUR',
-    label: 'EUR €',
-    EUR: 1,
-    USD: 1.099141,
-    GEL: 2.874259,
-    RUB: 91.943253,
-  },
-  {
-    value: 'GEL',
-    label: 'GEL ₾',
-    EUR: 0.347916,
-    USD: 0.382409,
-    GEL: 1,
-    RUB: 31.988511,
-  },
-  {
-    value: 'RUB',
-    label: 'RUB ₽',
-    EUR: 0.010876,
-    USD: 0.011955,
-    GEL: 0.031261,
-    RUB: 1,
-  },
-]
-
 const getCurrencySymbol = (currency: string) => {
   switch (currency) {
     case 'USD':
@@ -71,22 +36,23 @@ const getCurrencySymbol = (currency: string) => {
   }
 }
 
+const requiredCurrencies = ['USD', 'EUR', 'GEL', 'RUB']
+
 const formatCurrency = (currencyData: Currency) => {
   const value = JSON.parse(currencyData.value)
+  const currencyObj = value.data
 
-  const selectOptions: CurrencyOption[] = value.map((c: any) => {
-    const cur: any = Object.values(c.data).find((i: any) => i.value === 1)
+  const selectOptions: CurrencyOption[] = requiredCurrencies.map((curCode) => {
     return {
-      value: cur.code,
-      label: `${cur.code} ${getCurrencySymbol(cur.code)}`,
-      EUR: c.data['EUR'].value,
-      USD: c.data['USD'].value,
-      GEL: c.data['GEL'].value,
-      RUB: c.data['RUB'].value,
+      value: curCode,
+      label: `${curCode} ${getCurrencySymbol(curCode)}`,
+      EUR: currencyObj['EUR'].value / currencyObj[curCode].value,
+      USD: currencyObj['USD'].value / currencyObj[curCode].value,
+      GEL: currencyObj['GEL'].value / currencyObj[curCode].value,
+      RUB: currencyObj['RUB'].value / currencyObj[curCode].value,
     }
   })
-
-  return selectOptions ?? mock
+  return selectOptions
 }
 
 export default async function Home() {
@@ -103,29 +69,14 @@ export default async function Home() {
   let lastCurrency = data && data.length && data[0]
 
   const timeNow = +new Date()
-  const timeDiff = timeNow - +new Date(lastCurrency.created_at)
+  const timeDiff = timeNow - +new Date(lastCurrency?.created_at)
   const timeDiffInHours = timeDiff / (1000 * 60 * 60)
 
-  // REFETCH EVERY 12 HOURS
-  if (!data || data.length === 0 || timeDiffInHours > 12) {
-    const freshCurrencies = await Promise.all([
-      new CurrencyAPI(process.env.CURRENCYAPI_KEY)?.latest({
-        base_currency: 'USD',
-        currencies: 'USD,EUR,GEL,RUB',
-      }),
-      new CurrencyAPI(process.env.CURRENCYAPI_KEY)?.latest({
-        base_currency: 'EUR',
-        currencies: 'USD,EUR,GEL,RUB',
-      }),
-      new CurrencyAPI(process.env.CURRENCYAPI_KEY)?.latest({
-        base_currency: 'GEL',
-        currencies: 'USD,EUR,GEL,RUB',
-      }),
-      new CurrencyAPI(process.env.CURRENCYAPI_KEY)?.latest({
-        base_currency: 'RUB',
-        currencies: 'USD,EUR,GEL,RUB',
-      }),
-    ])
+  // // REFETCH EVERY 12 HOURS
+  if (!lastCurrency || !data || data.length === 0 || timeDiffInHours > 12) {
+    const freshCurrencies = await new CurrencyAPI(
+      process.env.CURRENCYAPI_KEY
+    )?.latest()
 
     await supabase.from('currencies').insert({
       value: JSON.stringify(freshCurrencies),
