@@ -74,15 +74,19 @@ export default async function Home() {
 
   // // REFETCH EVERY 12 HOURS
   if (!lastCurrency || !data || data.length === 0 || timeDiffInHours > 12) {
-    const freshCurrencies = await new CurrencyAPI(
-      process.env.CURRENCYAPI_KEY
-    )?.latest()
+    try {
+      const freshCurrencies = await new CurrencyAPI(
+        process.env.CURRENCYAPI_KEY
+      )?.latest()
 
-    await supabase.from('currencies').insert({
-      value: JSON.stringify(freshCurrencies),
-    })
+      await supabase.from('currencies').insert({
+        value: JSON.stringify(freshCurrencies),
+      })
 
-    lastCurrency = { value: JSON.stringify(freshCurrencies) }
+      lastCurrency = { value: JSON.stringify(freshCurrencies) }
+    } catch (error) {
+      console.error('Limit is over', error)
+    }
   }
 
   return (
