@@ -72,8 +72,8 @@ export default async function Home() {
   const timeDiff = timeNow - +new Date(lastCurrency?.created_at)
   const timeDiffInHours = timeDiff / (1000 * 60 * 60)
 
-  // // REFETCH EVERY 12 HOURS
-  if (!lastCurrency || !data || data.length === 0 || timeDiffInHours > 12) {
+  // // REFETCH EVERY 3 HOURS
+  if (!lastCurrency || !data || data.length === 0 || timeDiffInHours > 3) {
     try {
       const freshCurrencies = await new CurrencyAPI(
         process.env.CURRENCYAPI_KEY
