@@ -69,21 +69,30 @@ export default async function Home() {
   let lastCurrency = data && data.length && data[0]
 
   const timeNow = +new Date()
-  const timeDiff = timeNow - +new Date(lastCurrency?.created_at)
+  const timeDiff = timeNow - +new Date(+lastCurrency?.created_at)
   const timeDiffInHours = timeDiff / (1000 * 60 * 60)
 
-  // // REFETCH EVERY 3 HOURS
+  // REFETCH EVERY 3 HOURS
   if (!lastCurrency || !data || data.length === 0 || timeDiffInHours > 3) {
     try {
       const freshCurrencies = await new CurrencyAPI(
         process.env.CURRENCYAPI_KEY
       )?.latest()
 
+      const stringifiedTimeNow = timeNow.toString()
+
       await supabase.from('currencies').insert({
         value: JSON.stringify(freshCurrencies),
+        created_at: stringifiedTimeNow,
       })
 
-      lastCurrency = { value: JSON.stringify(freshCurrencies) }
+      // remove old data
+      await supabase.from('currencies').delete().match({ id: lastCurrency?.id })
+
+      lastCurrency = {
+        value: JSON.stringify(freshCurrencies),
+        created_at: stringifiedTimeNow,
+      }
     } catch (error) {
       console.error('Limit is over', error)
     }
