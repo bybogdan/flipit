@@ -4,7 +4,7 @@ import { CurrencyOption } from '@/app/page'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import Select from 'react-select'
-import { InstallIcon, SettingIcon } from './icons'
+import { SettingIcon } from './icons'
 import Link from 'next/link'
 import { LC_CURRENCY } from '@/lib/utils'
 import { Skeleton } from './ui/skeleton'
@@ -26,7 +26,7 @@ const getCurrencySymbol = (currency: string) => {
 
 export const Converter = ({ options }: { options: CurrencyOption[] }) => {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [amount, setAmount] = useState<number | ''>('')
+  const [amount, setAmount] = useState<string>('')
   const [currency, setCurrency] = useState('USD')
 
   const current = options.find((c) => c.value === currency)
@@ -69,17 +69,18 @@ export const Converter = ({ options }: { options: CurrencyOption[] }) => {
               return
             }
 
-            if (Number.isNaN(+e.target.value)) {
-              toast.error(
-                `Are you nuts?
-                Use only the integers [0-9]`
-              )
+            const amountWithDot = e.target.value.replace(',', '.')
+            const moreThanOneDot = amountWithDot.split('.').length > 2
+
+            if (Number.isNaN(+amountWithDot) || moreThanOneDot) {
+              toast.error(`Something wrong!
+              Plese provide a valid number.`)
 
               setAmount('')
               return
             }
 
-            setAmount(parseFloat(e.target.value))
+            setAmount(amountWithDot)
           }}
         />
 
