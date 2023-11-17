@@ -18,6 +18,7 @@ export type CurrencyOption = {
   EUR: number
   USD: number
   GEL: number
+  PLN: number
   RUB: number
 }
 
@@ -31,12 +32,14 @@ const getCurrencySymbol = (currency: string) => {
       return '₾'
     case 'RUB':
       return '₽'
+    case 'PLN':
+      return 'zł'
     default:
       return '$'
   }
 }
 
-const requiredCurrencies = ['USD', 'EUR', 'GEL', 'RUB']
+const requiredCurrencies = ['USD', 'EUR', 'GEL', 'PLN', 'RUB']
 
 const formatCurrency = (currencyData: Currency) => {
   const value = JSON.parse(currencyData.value)
@@ -49,6 +52,7 @@ const formatCurrency = (currencyData: Currency) => {
       EUR: currencyObj['EUR'].value / currencyObj[curCode].value,
       USD: currencyObj['USD'].value / currencyObj[curCode].value,
       GEL: currencyObj['GEL'].value / currencyObj[curCode].value,
+      PLN: currencyObj['PLN'].value / currencyObj[curCode].value,
       RUB: currencyObj['RUB'].value / currencyObj[curCode].value,
     }
   })

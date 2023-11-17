@@ -6,7 +6,7 @@ import { LC_CURRENCY } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 
-const currencyNames = ['USD', 'EUR', 'GEL', 'RUB']
+const currencyNames = ['USD', 'EUR', 'GEL', 'PLN', 'RUB']
 
 export const DefaultCurrency = () => {
   const router = useRouter()
@@ -21,6 +21,7 @@ export const DefaultCurrency = () => {
     EUR: false,
     GEL: false,
     RUB: false,
+    PLN: false,
     [initialCurrency]: true,
   })
 
@@ -32,6 +33,7 @@ export const DefaultCurrency = () => {
       EUR: false,
       GEL: false,
       RUB: false,
+      PLN: false,
       [currency]: true,
     }))
     setIsLoaded(true)
@@ -58,6 +60,7 @@ export const DefaultCurrency = () => {
                     EUR: false,
                     GEL: false,
                     RUB: false,
+                    PLN: false,
                     [currency]: checked,
                   }))
                 }

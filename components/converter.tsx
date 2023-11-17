@@ -19,6 +19,8 @@ const getCurrencySymbol = (currency: string) => {
       return '₾'
     case 'RUB':
       return '₽'
+    case 'PLN':
+      return 'zł'
     default:
       return '$'
   }
